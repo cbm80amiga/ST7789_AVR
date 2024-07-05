@@ -45,7 +45,7 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 ## Tested displays:
 - 240x240 1.3" IPS (without CS pin)
   
-<img src="images/lcd1.3.jpg" height="300" /> <img src="images/lcd1.3a.jpg" height="300" /> <img src="images/lcd1.3b.jpg" height="300" />
+<img src="images/lcd1.3.jpg" height="280" /> <img src="images/lcd1.3a.jpg" height="280" /> <img src="images/lcd1.3b.jpg" height="280" />
 
 - 240x240 1.54" IPS (with CS pin)
 
@@ -65,12 +65,12 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 - 240x320 2.8" IPS
 
-<img src="images/lcd2.8a.jpg" height="300" /> <img src="images/lcd2.8b.jpg" height="300" />
+<img src="images/lcd2.8a.jpg" height="280" /> <img src="images/lcd2.8b.jpg" height="280" />
 
 
 ## Connections:
 
-Without CS (1.3" only)
+Without CS (1.3" only), use **CS_ALWAYS_LOW**
 
 |LCD pin|LCD pin name|Arduino|
 |--|--|--|
@@ -82,7 +82,7 @@ Without CS (1.3" only)
 |#06| DC  |D10 or any digital|
 |#07| BLK |NC|
 
-With CS (1.69", 1.9", 2.0")
+With CS (1.69", 1.9", 2.0"), don't use **CS_ALWAYS_LOW**
 
 |LCD pin|LCD pin name|Arduino|
 |--|--|--|
