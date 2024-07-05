@@ -9,9 +9,11 @@ Significantly optimized for 16MHz **AVR Arduino boards** (2.5-5x faster than oth
 
 Achieved 7.1Mbps SPI transfer rate (at DIV2/16MHz clock).
 
-In compatiliblity mode it **should** work with other MCUs, but I didn't test all configuration. For STM32 (BluePill) there is separate optimized version here: https://github.com/cbm80amiga/Arduino_ST7789_STM
+In compatiliblity mode it **should** work with other MCUs, but I didn't test all configurations.
 
-YouTube video:
+For STM32 (BluePill) there is separate optimized version here: https://github.com/cbm80amiga/Arduino_ST7789_STM
+
+## YouTube video: ##
 
 https://youtu.be/GciLKcWQZK4
 
