@@ -44,15 +44,24 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 ## Tested displays:
 - 240x240 1.3" IPS (without CS pin)
-![IPS 1.3"](images/lcd1.3.jpg)
+  
+<img src="images/lcd1.3.jpg" height="300" /> <img src="images/lcd1.3a.jpg" height="300" /> <img src="images/lcd1.3b.jpg" height="300" />
+
 - 240x240 1.54" IPS (with CS pin)
 - 240x280 1.69" IPS
-![IPS 1.69"](images/lcd1.69.jpg)
+
+<img src="images/lcd1.69.jpg" height="300" /> <img src="images/lcd1.69a.jpg" height="300" /> <img src="images/lcd1.69b.jpg" height="300" />
+
 - 170x320 1.9" IPS
-![IPS 1.9"](images/lcd1.9.jpg)
+
+<img src="images/lcd1.9.jpg" height="300" /> <img src="images/lcd1.9a.jpg" height="300" /> <img src="images/lcd1.9b.jpg" height="300" />
+
 - 240x320 2.0" IPS
-![IPS 2.0"](images/lcd2.0.jpg)
+
+<img src="images/lcd2.0.jpg" height="300" /> <img src="images/lcd2.0a.jpg" height="300" /> <img src="images/lcd2.0b.jpg" height="300" />
+
 - 240x320 2.8" IPS
+
 
 
 ## Connections:
