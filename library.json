@@ -1,0 +1,18 @@
+{
+  "name":        "ST7789 AVR",
+  "keywords":    "st7789, ips, avr, fast, spi",
+  "description": "Fast SPI library for the ST7789 IPS display optimized for AVR Arduinos",
+  "authors":
+  {
+    "name":  "Pawel A. Hernik",
+    "email": "pawelhernik123@gmail.com"
+  },
+  "repository":
+  {
+    "type": "git",
+    "url":  "https://github.com/cbm80amiga/ST7789_AVR.git"
+  },
+  "version":    "1.1.0",
+  "frameworks": "arduino",
+  "platforms":  "*"
+}
