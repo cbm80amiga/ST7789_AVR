@@ -70,15 +70,30 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 ## Connections:
 
+Without CS (1.3" only)
+
 |LCD pin|LCD pin name|Arduino|
 |--|--|--|
- |#01| GND| GND|
- |#02| VCC |VCC (3.3V only!)|
- |#03| SCL |D13/SCK|
- |#04| SDA|D11/MOSI|
- |#05| RES|D8 or any digital|
- |#06| DC|D7 or any digital|
- |#07| BLK | NC|
+|#01| GND| GND|
+|#02| VCC |VCC (3.3V only!)|
+|#03| SCL |D13/SCK|
+|#04| SDA |D11/MOSI|
+|#05| RES |D9 or any digital|
+|#06| DC  |D10 or any digital|
+|#07| BLK |NC|
+
+With CS (1.69", 1.9", 2.0")
+
+|LCD pin|LCD pin name|Arduino|
+|--|--|--|
+|#01| GND| GND|
+|#02| VCC |VCC (3.3V only!)|
+|#03| SCL |D13/SCK|
+|#04| SDA |D11/MOSI|
+|#05| RES |optional|
+|#06| DC  |D10 or any digital|
+|#07| CS  |D9 or any digital|
+|#08| BLK |VCC|
 
 
 If you find it useful and want to buy me a coffee or a beer:
