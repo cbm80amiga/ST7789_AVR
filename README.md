@@ -23,11 +23,11 @@ https://www.youtube.com/playlist?list=PLxb1losWErZ7thUyB05phRR3DoiYN_kcD
 
 ## Configuration
 
-Use "define COMPATIBILITY_MODE" - then the library should work on all Arduino compatible boards
+Use **#define COMPATIBILITY_MODE** - then the library should work on all Arduino compatible boards
 
-Remove above for the best performance on 16MHz AVR
+Remove above define for the best performance on 16MHz AVR
 
-Use "#define CS_ALWAYS_LOW" for LCD boards where CS pin is internally connected to the ground, it gives better performance
+Use **#define CS_ALWAYS_LOW** for LCD boards where CS pin is internally connected to the ground, it gives better performance
 
 Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
@@ -65,7 +65,7 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 - 240x320 2.8" IPS
 
-<img src="images/lcd2.8a.jpg" height="280" /> <img src="images/lcd2.8b.jpg" height="280" />
+<img src="images/lcd2.8a.jpg" height="250" /> <img src="images/lcd2.8b.jpg" height="250" />
 
 
 ## Connections:
