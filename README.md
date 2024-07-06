@@ -44,28 +44,40 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 ## Tested displays:
 - 240x240 1.3" IPS (without CS pin)
-  
-<img src="images/lcd1.3.jpg" height="280" /> <img src="images/lcd1.3a.jpg" height="280" /> <img src="images/lcd1.3b.jpg" height="280" />
+
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd1.3.jpg" height="280" title="1.3" /> |<img src="images/lcd1.3a.jpg" height="280" /> |<img src="images/lcd1.3b.jpg" height="280" />|
 
 - 240x240 1.54" IPS (with CS pin)
 
-<img src="images/lcd1.54.jpg" height="280" /> <img src="images/lcd1.54a.jpg" height="280" /> <img src="images/lcd1.54b.jpg" height="280" />
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd1.54.jpg" height="280" title="1.54" /> |<img src="images/lcd1.54a.jpg" height="280" />| <img src="images/lcd1.54b.jpg" height="280" />|
 
 - 240x280 1.69" IPS
 
-<img src="images/lcd1.69.jpg" height="300" /> <img src="images/lcd1.69a.jpg" height="300" /> <img src="images/lcd1.69b.jpg" height="300" />
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd1.69.jpg" height="300" /> |<img src="images/lcd1.69a.jpg" height="300" />| <img src="images/lcd1.69b.jpg" height="300" />|
 
 - 170x320 1.9" IPS
 
-<img src="images/lcd1.9.jpg" height="300" /> <img src="images/lcd1.9a.jpg" height="300" /> <img src="images/lcd1.9b.jpg" height="300" />
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd1.9.jpg" height="300" /> |<img src="images/lcd1.9a.jpg" height="300" /> |<img src="images/lcd1.9b.jpg" height="300" />|
 
 - 240x320 2.0" IPS
 
-<img src="images/lcd2.0.jpg" height="300" /> <img src="images/lcd2.0a.jpg" height="300" /> <img src="images/lcd2.0b.jpg" height="300" />
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd2.0.jpg" height="300" /> |<img src="images/lcd2.0a.jpg" height="300" /> |<img src="images/lcd2.0b.jpg" height="300" />|
 
 - 240x320 2.8" TFT?  - use inverseDisplay(1)
 
-<img src="images/lcd2.8.jpg" height="300" /> <img src="images/lcd2.8a.jpg" height="300" /> <img src="images/lcd2.8b.jpg" height="300" />
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd2.8.jpg" height="300" /> |<img src="images/lcd2.8a.jpg" height="300" /> |<img src="images/lcd2.8b.jpg" height="300" />|
 
 
 ## Connections:
