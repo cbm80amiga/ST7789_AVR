@@ -49,7 +49,7 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 - 240x240 1.54" IPS (with CS pin)
 
-<img src="images/lcd1.54.jpg" height="300" /> <img src="images/lcd1.54a.jpg" height="300" /> <img src="images/lcd1.54b.jpg" height="300" />
+<img src="images/lcd1.54.jpg" height="280" /> <img src="images/lcd1.54a.jpg" height="280" /> <img src="images/lcd1.54b.jpg" height="280" />
 
 - 240x280 1.69" IPS
 
