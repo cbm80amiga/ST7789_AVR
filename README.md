@@ -49,7 +49,7 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 - 240x240 1.54" IPS (with CS pin)
 
-<img src="images/lcd1.54a.jpg" height="300" /> <img src="images/lcd1.54b.jpg" height="300" />
+<img src="images/lcd1.54.jpg" height="300" /> <img src="images/lcd1.54a.jpg" height="300" /> <img src="images/lcd1.54b.jpg" height="300" />
 
 - 240x280 1.69" IPS
 
@@ -63,14 +63,14 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 
 <img src="images/lcd2.0.jpg" height="300" /> <img src="images/lcd2.0a.jpg" height="300" /> <img src="images/lcd2.0b.jpg" height="300" />
 
-- 240x320 2.8" IPS
+- 240x320 2.8" TFT?  - use inverseDisplay(1)
 
-<img src="images/lcd2.8a.jpg" height="250" /> <img src="images/lcd2.8b.jpg" height="250" />
+<img src="images/lcd2.8.jpg" height="300" /> <img src="images/lcd2.8a.jpg" height="300" /> <img src="images/lcd2.8b.jpg" height="300" />
 
 
 ## Connections:
 
-Without CS (1.3" only), use **CS_ALWAYS_LOW**
+Without CS (1.3" only) - use **CS_ALWAYS_LOW**
 
 |LCD pin|LCD pin name|Arduino|
 |--|--|--|
@@ -82,7 +82,7 @@ Without CS (1.3" only), use **CS_ALWAYS_LOW**
 |#06| DC  |D10 or any digital|
 |#07| BLK |NC|
 
-With CS (1.69", 1.9", 2.0"), don't use **CS_ALWAYS_LOW**
+With CS - don't use **CS_ALWAYS_LOW**
 
 |LCD pin|LCD pin name|Arduino|
 |--|--|--|
