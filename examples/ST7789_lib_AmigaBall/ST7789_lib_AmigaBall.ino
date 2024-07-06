@@ -3,6 +3,7 @@
 // (c) 2019-24 Pawel A. Hernik
 // YT video: https://youtu.be/KwtkfmglT-c
 // Added support for LCD height 320,280,240
+// Optimized ball refresh from 61 to 39ms
 
 /*
 ST7789 240x240 1.3" IPS (without CS pin) - only 4+2 wires required:
@@ -49,13 +50,13 @@ ST7789 240x320 2.0" IPS - only 4+2 wires required:
 #include "ST7789_AVR.h"
 
 #define TFT_DC   10
-//#define TFT_CS    9  // with CS
-//#define TFT_RST  -1  // with CS
-#define TFT_CS  -1 // without CS
-#define TFT_RST  9 // without CS
+#define TFT_CS    9  // with CS
+#define TFT_RST  -1  // with CS
+//#define TFT_CS  -1 // without CS
+//#define TFT_RST  9 // without CS
 
 #define SCR_WD 240
-#define SCR_HT 240
+#define SCR_HT 320
 ST7789_AVR lcd = ST7789_AVR(TFT_DC, TFT_RST, TFT_CS);
 
 #include "ball.h"
@@ -67,15 +68,15 @@ uint16_t bgColS   = RGBto565(100,100,100);
 uint16_t lineCol  = RGBto565(150,40,150);
 uint16_t lineColS = RGBto565(90,20,90);
 
-#define LINE_YS  20
-#define LINE_XS1 30
-#define LINE_XS2 6
-
 #define BALL_WD 64
 #define BALL_HT 64
 #define BALL_SWD SCR_WD
+#define LINE_YS  20
+#define LINE_XS1 30
+#define LINE_XS2 6
+#define SP 20
 
-// support for 240,280 and 320 lines LCD
+// support for 240, 280 and 320 line LCDs
 #if SCR_HT==240
 #define BALL_SHT 180
 #elif SCR_HT==320
@@ -84,14 +85,13 @@ uint16_t lineColS = RGBto565(90,20,90);
 #define BALL_SHT 220
 #endif
 
-#define SP 20
-
 #define SHADOW 20
 //#define SHADOW 0
 
 // AVR stats:
 // with shadow        - 60-61ms/17fps
 // without shadow     - 55-56ms/18fps
+// with shadow        - 38-40ms/26fps -> new partial line copying
 
 void drawBall(int x, int y)
 {
@@ -104,10 +104,10 @@ void drawBall(int x, int y)
     if(yy==LINE_YS      || yy==LINE_YS+1*SP || yy==LINE_YS+2*SP || yy==LINE_YS+3*SP || yy==LINE_YS+4*SP || yy==LINE_YS+5*SP || yy==LINE_YS+6*SP ||
        yy==LINE_YS+7*SP || yy==LINE_YS+8*SP || yy==LINE_YS+9*SP || yy==LINE_YS+10*SP || yy==LINE_YS+11*SP || yy==LINE_YS+12*SP) {  // ugly but fast 
     //if(((yy-LINE_YS)%SP)==0) {
-      for(i=0;i<LINE_XS1;i++) line[i]=line[SCR_WD-1-i]=bgCol;
-      for(i=0;i<=SCR_WD-LINE_XS1*2;i++) line[i+LINE_XS1]=lineCol;
+      for(i=0;i<LINE_XS1;i++) line[i]=line[BALL_SWD-1-i]=bgCol;
+      for(i=0;i<=BALL_SWD-LINE_XS1*2;i++) line[i+LINE_XS1]=lineCol;
     } else {
-      for(i=0;i<SCR_WD;i++) line[i]=bgCol;
+      for(i=0;i<BALL_SWD;i++) line[i]=bgCol;
       if(yy>LINE_YS) for(i=0;i<10;i++) line[LINE_XS1+i*SP]=lineCol;
     }
     for(i=BALL_WD-2;i>=0;i-=2) {
@@ -116,18 +116,22 @@ void drawBall(int x, int y)
         line[x+i+0] = palette[v>>4];
         #if SHADOW>0
         ii=x+i+0+SHADOW;
-        if(ii<SCR_WD) { if(line[ii]==bgCol) line[ii]=bgColS; else if(line[ii]==lineCol) line[ii]=lineColS; }
+        if(ii<BALL_SWD) { if(line[ii]==bgCol) line[ii]=bgColS; else if(line[ii]==lineCol) line[ii]=lineColS; }
         #endif
       }
       if(v&0xf) {
         line[x+i+1] = palette[v&0xf];
         #if SHADOW>0
         ii=x+i+1+SHADOW;
-        if(ii<SCR_WD) { if(line[ii]==bgCol) line[ii]=bgColS; else if(line[ii]==lineCol) line[ii]=lineColS; }
+        if(ii<BALL_SWD) { if(line[ii]==bgCol) line[ii]=bgColS; else if(line[ii]==lineCol) line[ii]=lineColS; }
         #endif
       }
     }
-    lcd.drawImage(0,yy,SCR_WD,1,line);
+    //lcd.drawImage(0,yy,SCR_WD,1,line); // old full line copy
+    int bx=x-2,bw=BALL_WD+SHADOW+2+2; // 2 pixels are safe enough
+    if(bx<0) bx=0;
+    if(bx+bw>SCR_WD) bw=SCR_WD-bx;
+    lcd.drawImage(bx,yy,bw,1,line+bx); // optimized part line copy
   }
 }
 
@@ -137,6 +141,9 @@ void setup()
   lcd.init(SCR_WD,SCR_HT);
   //lcd.setRotation(2);
   lcd.fillScreen(bgCol);
+  //lcd.invertDisplay(0);
+  //lcd.idleDisplay(0);
+
   int i,o,numl=(SCR_HT==320?12:SCR_HT==240?8:10);
   uint16_t *pal = (uint16_t*)ball+3;
   for(i=0;i<16;i++) palette[i] = pgm_read_word(&pal[i]);
@@ -166,13 +173,13 @@ void loop()
   for(int i=0;i<14;i++) {
     palette[i+1] = ((i+anim)%14)<7 ? WHITE : RED;
     //int c=((i+anim)%14); // with pink between white and red
-    //if(c<6) palette[i+1]=WHITE; else if(c==6 || c==13) palette[i+1]=RGBto565(255,128,128); else palette[i+1]=RED;
+    //if(c<6) palette[i+1]=WHITE; else if(c==6 || c==13) palette[i+1]=RGBto565(255,150,150); else palette[i+1]=RED;
   }
+  //x=50;y=90;anim=0;
   drawBall(x,y);
   anim+=animd;
   if(anim<0) anim+=14;
-  x+=xd;
-  y+=yd;
+  x+=xd; y+=yd;
   if(x<0) { x=0; xd=-xd; animd=-animd; }
   if(x>=BALL_SWD-BALL_WD) { x=BALL_SWD-BALL_WD; xd=-xd; animd=-animd; }
   if(y<0) { y=0; yd=-yd; }
