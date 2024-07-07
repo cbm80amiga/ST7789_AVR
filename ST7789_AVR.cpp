@@ -476,10 +476,11 @@ void ST7789_AVR::drawPixel(int16_t x, int16_t y, uint16_t color)
 }
 
 // ----------------------------------------------------------
+// full clipping
 void ST7789_AVR::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color) 
 {
   if(x>=_width || y>=_height || h<=0) return;
-  if(y+h-1>=_height) h=_height-y;
+  if(y+h>_height) h=_height-y;
   if(y<0) { h+=y; y=0; }
   if(h<=0) return;
   setAddrWindow(x, y, x, y+h-1);
@@ -491,15 +492,36 @@ void ST7789_AVR::drawFastVLine(int16_t x, int16_t y, int16_t h, uint16_t color)
 }
 
 // ----------------------------------------------------------
+// full clipping
 void ST7789_AVR::drawFastHLine(int16_t x, int16_t y, int16_t w,  uint16_t color) 
 {
   if(x>=_width || y>=_height || w<=0) return;
-  if(x+w-1>=_width)  w=_width-x;
+  if(x+w>_width)  w=_width-x;
   if(x<0) { w+=x; x=0; }
   if(w<=0) return;
   setAddrWindow(x, y, x+w-1, y);
 
   writeMulti(color,w);
+
+  CS_IDLE;
+  SPI_END;
+}
+
+// ----------------------------------------------------------
+// full clipping
+void ST7789_AVR::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) 
+{
+  if(x>=_width || y>=_height || w<=0 || h<=0) return;
+  if(x+w>_width)  w=_width -x;
+  if(y+h>_height) h=_height-y;
+  if(x<0) { w+=x; x=0; }
+  if(w<=0) return;
+  if(y<0) { h+=y; y=0; }
+  if(h<=0) return;
+  setAddrWindow(x, y, x+w-1, y+h-1);
+
+  if((long)w*h>0x10000) writeMulti(color,0); // when w*h>64k
+  writeMulti(color,w*h);
 
   CS_IDLE;
   SPI_END;
@@ -512,36 +534,17 @@ void ST7789_AVR::fillScreen(uint16_t color)
 }
 
 // ----------------------------------------------------------
-void ST7789_AVR::fillRect(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t color) 
-{
-  if(x>=_width || y>=_height || w<=0 || h<=0) return;
-  if(x+w-1>=_width)  w=_width -x;
-  if(y+h-1>=_height) h=_height-y;
-  if(x<0) { w+=x; x=0; }
-  if(w<=0) return;
-  if(y<0) { h+=y; y=0; }
-  if(h<=0) return;
-  setAddrWindow(x, y, x+w-1, y+h-1);
-
-  if((long)w*h>0x10000) writeMulti(color,0);
-  writeMulti(color,w*h);
-
-  CS_IDLE;
-  SPI_END;
-}
-
-// ----------------------------------------------------------
-// draws image from RAM
+// draws image from RAM, only basic clipping
 void ST7789_AVR::drawImage(int16_t x, int16_t y, int16_t w, int16_t h, uint16_t *img16) 
 {
-  // all protections should be on the application side
+  // all clipping should be on the application side
   if(w<=0 || h<=0) return;  // left for compatibility
   //if(x>=_width || y>=_height || w<=0 || h<=0) return;
   //if(x+w-1>=_width)  w=_width -x;
   //if(y+h-1>=_height) h=_height-y;
   setAddrWindow(x, y, x+w-1, y+h-1);
 
-  copyMulti((uint8_t *)img16, w*h);
+  copyMulti((uint8_t *)img16, w*h); // assumed w*h will never be >64k
 
   CS_IDLE;
   SPI_END;
