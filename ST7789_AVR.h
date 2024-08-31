@@ -10,7 +10,7 @@
 //#define COMPATIBILITY_MODE
 
 // define for LCD boards where CS pin is internally connected to the ground
-#define CS_ALWAYS_LOW
+//#define CS_ALWAYS_LOW
 // ------------------------------
 
 #include "Arduino.h"
