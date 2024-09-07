@@ -12,7 +12,7 @@
     "type": "git",
     "url":  "https://github.com/cbm80amiga/ST7789_AVR.git"
   },
-  "version":    "1.2.0",
+  "version":    "1.2.1",
   "frameworks": "arduino",
   "platforms":  "*"
 }
