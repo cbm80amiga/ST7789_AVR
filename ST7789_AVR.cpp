@@ -193,7 +193,7 @@ inline void ST7789_AVR::copyMulti(uint8_t *img, uint16_t num)
 #ifdef COMPATIBILITY_MODE
   while(num--) { SPI.transfer(*(img+1)); SPI.transfer(*(img+0)); img+=2; }
 #else
-  uint8_t lo,hi;
+  uint8_t lo = 0, hi = 0;
   asm volatile
   (
   "2:\n"
