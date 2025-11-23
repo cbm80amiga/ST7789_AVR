@@ -1,0 +1,33 @@
+name: PlatformIO Examples CI
+
+on: [push]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        example: [examples/ST7789_lib_HelloWorld]
+
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cache/pip
+            ~/.platformio/.cache
+          key: ${{ runner.os }}-pio
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - name: Install PlatformIO Core
+        run: pip install --upgrade platformio
+
+      - name: Build PlatformIO examples (release mode)
+        run: pio ci --lib="." -O "lib_deps=adafruit/Adafruit GFX Library@^1.12.0" --board=nanoatmega328new --board=uno
+        env:
+          PLATFORMIO_CI_SRC: ${{ matrix.example }}
+      - name: Build PlatformIO examples (debug mode)
+        run: pio ci --lib="." -O "build_type=debug" -O "lib_deps=adafruit/Adafruit GFX Library@^1.12.0" --board=nanoatmega328new --board=uno
+        env:
+          PLATFORMIO_CI_SRC: ${{ matrix.example }}

@@ -163,7 +163,7 @@ inline void ST7789_AVR::writeMulti(uint16_t color, uint16_t num)
 #else
   asm volatile
   (
-  "next:\n"
+  "1:\n"
     "out %[spdr],%[hi]\n"
     "rjmp .+0\n"  // wait 8*2+1 = 17 cycles
     "rjmp .+0\n"
@@ -183,7 +183,7 @@ inline void ST7789_AVR::writeMulti(uint16_t color, uint16_t num)
     "rjmp .+0\n"
     "nop\n"
     "sbiw %[num],1\n"
-    "brne next\n"
+    "brne 1b\n"
     : [num] "+w" (num)
     : [spdr] "I" (_SFR_IO_ADDR(SPDR)), [lo] "r" ((uint8_t)color), [hi] "r" ((uint8_t)(color>>8))
   );
@@ -196,10 +196,10 @@ inline void ST7789_AVR::copyMulti(uint8_t *img, uint16_t num)
 #ifdef COMPATIBILITY_MODE
   do { SPI.transfer(*(img+1)); SPI.transfer(*(img+0)); img+=2; } while(--num);
 #else
-  uint8_t lo,hi;
+  uint8_t lo = 0, hi = 0;
   asm volatile
   (
-  "nextCopy:\n"
+  "2:\n"
     "ld  %[hi],%a[img]+\n"
     "ld  %[lo],%a[img]+\n"
     "out %[spdr],%[lo]\n"
@@ -219,7 +219,7 @@ inline void ST7789_AVR::copyMulti(uint8_t *img, uint16_t num)
     "rjmp .+0\n"
     "nop\n"
     "sbiw %[num],1\n"
-    "brne nextCopy\n"
+    "brne 2b\n"
     : [num] "+w" (num)
     : [spdr] "I" (_SFR_IO_ADDR(SPDR)), [img] "e" (img), [lo] "r" (lo), [hi] "r" (hi)
   );
