@@ -9,6 +9,10 @@
 // if defined - the library should work on all Arduino compatible boards
 //#define COMPATIBILITY_MODE
 
+// only for compatibility mode: 8M for AVR or 40-80M for ESP
+#define SPI_FREQ 8000000
+//#define SPI_FREQ 80000000
+
 // define for LCD boards where CS pin is internally connected to the ground
 //#define CS_ALWAYS_LOW
 // ------------------------------
@@ -74,6 +78,7 @@ class ST7789_AVR : public Adafruit_GFX {
   void setPartArea(uint16_t sr, uint16_t er);
   void setBrightness(uint8_t br);
   void powerSave(uint8_t mode);
+  void setCGRAM(uint8_t xs, uint8_t xe, uint8_t ys, uint8_t ye);
 
   uint16_t Color565(uint8_t r, uint8_t g, uint8_t b);
   uint16_t color565(uint8_t r, uint8_t g, uint8_t b) { return Color565(r, g, b); } 

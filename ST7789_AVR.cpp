@@ -15,6 +15,9 @@ Changes:
 - fixed fillRect for w*h>64k
 - added support for 240x280 and 170x320
 - added clipping for negative x,y
+
+- added support for 2.25" 76x284 pixel display
+- fixed writeMulti() in compatibility mode
 */
 // -----------------------------------------
 // ST7789 commands
@@ -156,7 +159,7 @@ inline void ST7789_AVR::writeSPI(uint8_t c)
 inline void ST7789_AVR::writeMulti(uint16_t color, uint16_t num)
 {
 #ifdef COMPATIBILITY_MODE
-  while(num--) { SPI.transfer(color>>8);  SPI.transfer(color); }
+  do { SPI.transfer(color>>8);  SPI.transfer(color); } while(--num);
 #else
   asm volatile
   (
@@ -191,7 +194,7 @@ inline void ST7789_AVR::writeMulti(uint16_t color, uint16_t num)
 inline void ST7789_AVR::copyMulti(uint8_t *img, uint16_t num)
 {
 #ifdef COMPATIBILITY_MODE
-  while(num--) { SPI.transfer(*(img+1)); SPI.transfer(*(img+0)); img+=2; }
+  do { SPI.transfer(*(img+1)); SPI.transfer(*(img+0)); img+=2; } while(--num);
 #else
   uint8_t lo,hi;
   asm volatile
@@ -270,28 +273,48 @@ ST7789_AVR::ST7789_AVR(int8_t dc, int8_t rst, int8_t cs) : Adafruit_GFX(ST7789_T
 }
 
 // ----------------------------------------------------------
+void ST7789_AVR::setCGRAM(uint8_t xs, uint8_t xe, uint8_t ys, uint8_t ye)
+{
+  xstart = xs;  ystart = ys;
+  xend   = xe;  yend   = ye;
+}
+
+// ----------------------------------------------------------
 void ST7789_AVR::init(uint16_t wd, uint16_t ht) 
 {
   commonST7789Init(NULL);
-
+/*
   if(wd==240 && ht==280) {
-    xstart = 0;  ystart = 20;
-    xend   = 0;  yend   = 20;
+    setCGRAM(0,0,20,20);
+    //xstart = 0;  ystart = 20;
+    //xend   = 0;  yend   = 20;
     Serial.println(F("240x280"));
   } else if(wd==240 && ht==240) {
-    xstart = 0;  ystart = 80;
-    xend   = 0;  yend   = 0;
+    setCGRAM(0,0,80,0);
+    //xstart = 0;  ystart = 80;
+    //xend   = 0;  yend   = 0;
     Serial.println(F("240x240"));
   } else if(wd==170 && ht==320) {
-    xstart = 35;  ystart = 0;
-    xend   = 35;  yend   = 0;
+    setCGRAM(35,35,0,0);
+    //xstart = 35;  ystart = 0;
+    //xend   = 35;  yend   = 0;
     Serial.println(F("170x320"));
+  } else if(wd==76 && ht==284) {
+    setCGRAM(82,82,18,18);
+    //xstart = 82;  ystart = 18;
+    //xend   = 82;  yend   = 18;
+    Serial.println(F("76x284"));
   } else {
     // default CGRAM config
-    xstart = 0;  ystart = 0;
-    xend   = 0;  yend   = 0;
+    setCGRAM(0,0,0,0);
+    //xstart = 0;  ystart = 0;
+    //xend   = 0;  yend   = 0;
     Serial.println(F("240x320"));
-  }
+  }*/
+  if(wd==240 && ht==240)  setCGRAM(0,0,80,0);
+  else setCGRAM((240-wd)/2,(240-wd)/2,(320-ht)/2,(320-ht)/2);
+  //Serial.print(wd); Serial.print("x"); Serial.println(ht);
+
   xoffs = yoffs = 0;
   _width  = _widthIni  = wd;
   _height = _heightIni = ht;
@@ -325,7 +348,7 @@ void ST7789_AVR::displayInit(const uint8_t *addr)
 // Initialization code common to all ST7789 displays
 void ST7789_AVR::commonST7789Init(const uint8_t *cmdList) 
 {
-  Serial.println(F("ST7789_AVR lib init"));
+  Serial.println(F("ST7789_AVR init"));
   pinMode(dcPin, OUTPUT);
 #ifndef CS_ALWAYS_LOW
 	pinMode(csPin, OUTPUT);
@@ -343,7 +366,7 @@ void ST7789_AVR::commonST7789Init(const uint8_t *cmdList)
   // on AVR ST7789 works correctly in MODE2 and MODE3 but for STM32 only MODE3 seems to be working
   SPI.begin();
 #ifdef COMPATIBILITY_MODE
-  spiSettings = SPISettings(16000000, MSBFIRST, SPI_MODE3);  // 8000000 gives max speed on AVR 16MHz
+  spiSettings = SPISettings(SPI_FREQ, MSBFIRST, SPI_MODE3);  // 8000000 gives max speed on AVR 16MHz
 #else
   SPI.setClockDivider(SPI_CLOCK_DIV2);
   SPI.setDataMode(SPI_MODE3);

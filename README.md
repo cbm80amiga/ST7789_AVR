@@ -79,6 +79,11 @@ Tested with **Arduino IDE 1.6.5 and Adafruit_GFX 1.5.6**
 |--|--|--|
 |<img src="images/lcd2.8.jpg" title="2.8" /> |<img src="images/lcd2.8a.jpg" /> |<img src="images/lcd2.8b.jpg" />|
 
+- 76x284 2.25" TFT?  - use inverseDisplay(1)
+
+|Circuit|Front|Back|
+|--|--|--|
+|<img src="images/lcd2.25.jpg" title="2.25" /> |<img src="images/lcd2.25a.jpg" /> |<img src="images/lcd2.25b.jpg" />|
 
 ## Connections:
 

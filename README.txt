@@ -12,3 +12,4 @@ Supported displays:
 - 170x320 1.9" IPS
 - 240x320 2.0" IPS
 - 240x320 2.8" IPS
+- 76x284 2.25" IPS
